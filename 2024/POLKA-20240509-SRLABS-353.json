@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240509-SRLABS-353",
+  "modified": "2024-05-09T12:00:00Z",
+  "published": "2024-05-09T12:00:00Z",
+  "related": [],
+  "summary": "A high-severity vulnerability in XCMP (Cross Chain Message Passing) channels allows attackers to disable them by flooding with overweight messages, causing Denial of Service (DoS) conditions and requiring manual intervention to resolve.",
+  "details": "This vulnerability occurs when attackers flood XCMP channels with overweight messages that remain in storage indefinitely, causing congestion and Denial of Service (DoS) due to HRMP congestion control mechanisms. Without an automated system for removing cullable pages, the issue requires manual intervention, which can take hours to resolve. Even with automatic reaping of cullable pages, a significant number of overweight pages can persist, potentially leading to a permanent halt of the XCMP channel if the congestion control system suspends the source chain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "8.5"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.9.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.8.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/2393"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Stale pages counted for congestion control prevent XCMP channel resumption",
+    "affected_system": "FRAME",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-10-26T12:00:00Z",
+    "public": true
+  }
+}

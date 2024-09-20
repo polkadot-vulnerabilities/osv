@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240429-SRLABS-201",
+  "modified": "2024-04-29T12:00:00Z",
+  "published": "2024-04-29T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in DMP processing allows an attacker to perform a Denial of Service (DoS) attack against parachains by queuing a large number of messages, leading to memory exhaustion and preventing new block production.",
+  "details": "This vulnerability occurs when an attacker prevents block production on a parachain for several relay chain blocks, such as through a network-level DoS attack or by intentionally failing to make chunks for a candidate block available. This leads to an accumulation of pending messages to a parachain. When there are too many pending messages, the parachain becomes unable to produce new blocks due to exceeding the PoV size limit while attempting to process the queued messages in a single block. The only recovery method is through governance intervention on the relay chain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.10.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.9.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot/pull/6843"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1246"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "DMP processing allows persistent DoS against parachains",
+    "affected_system": "XCM/FRAME",
+    "type": "DoS and Memory Exhaustion",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2022-05-25T12:00:00Z",
+    "public": true
+  }
+}

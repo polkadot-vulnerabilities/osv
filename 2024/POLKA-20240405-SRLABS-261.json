@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240405-SRLABS-261",
+  "modified": "2024-04-05T12:00:00Z",
+  "published": "2024-04-05T12:00:00Z",
+  "related": [],
+  "summary": "Overflowing the bounded `DeletionQueue` allows for a Denial of Service (DoS) attack against contract termination in parachains using `pallet-contracts`. If too many contracts are terminated in a short time, further termination attempts fail.",
+  "details": "This vulnerability occurs when the bounded `DeletionQueue`, set by `DeletionQueueDepth`, is exceeded. For example, in the test runtime, this depth is set to 128. If more than this number of contracts is terminated in a short period, subsequent attempts to terminate additional contracts will fail. This can allow attackers to prevent legitimate contract termination, effectively locking up the remaining balance and storage deposit of affected contracts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.1.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/13702"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "DoS by overflowing `DeletionQueue`",
+    "affected_system": "pallet-contracts",
+    "type": "Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-01-26T12:00:00Z",
+    "public": true
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240320-SRLABS-342",
+  "modified": "2024-03-20T12:00:00Z",
+  "published": "2024-03-20T12:00:00Z",
+  "related": [],
+  "summary": "A critical vulnerability in XCM processing was discovered, where all message delivery fee payments were disabled due to the `FeeManager` being set to `()`. This flaw allowed attackers to cause network congestion without incurring costs.",
+  "details": "The vulnerability stems from the configuration of the `FeeManager` in XCVM, which was set to `()`, effectively disabling all message delivery fee payments. This omission rendered fee-based congestion control ineffective, allowing attackers to congest the network, resulting in long delivery delays, storage exhaustion, and dropping of messages. While the issue has been addressed, it took over five days to resolve, highlighting the importance of this disclosure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.6.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.5.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1234"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1556"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "All message delivery fee payments disabled via type `FeeManager = ()`",
+    "affected_system": "XCM",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-09-11T12:00:00Z",
+    "public": true
+  }
+}

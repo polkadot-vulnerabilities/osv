@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240610-SRLABS-367",
+  "modified": "2024-06-10T12:00:00Z",
+  "published": "2024-06-10T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in `xcmp-queue` allows messages exceeding the `MaxXcmpMessageLenOf<T>` limit to be dropped, potentially leading to loss of user funds when handling reserve transfers or teleports.",
+  "details": "In the `xcmp-queue` pallet, messages are queued and processed based on their size. If the total size of the messages exceeds the `MaxXcmpMessageLenOf<T>` limit, the conversion to a `BoundedVec` fails, causing all messages within the same page to be dropped. This issue can be exploited by malicious users to trigger selective message drops, potentially leading to a loss of user funds if the dropped messages contain reserve transfers or teleports.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "xcmp-queue"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "8.6"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.12.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.12.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Sending size limit not sufficient to prevent dropping of messages on destination side",
+    "affected_system": "xcmp-queue",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-12-18T12:00:00Z",
+    "public": true
+  }
+}

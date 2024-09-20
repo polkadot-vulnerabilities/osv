@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240405-SRLABS-262",
+  "modified": "2024-04-05T12:00:00Z",
+  "published": "2024-04-05T12:00:00Z",
+  "related": [],
+  "summary": "The weight calculation for deletions in `DeletionQueue` is based on execution time rather than proof size, potentially leading to exceeding permissible proof sizes and causing collators to be unable to produce valid blocks for the affected parachain.",
+  "details": "The vulnerability lies in how the `DeletionQueue` calculates weight based on execution time rather than the required proof size for iterating through all storage entries to be deleted. This flaw can result in the proof size limit being exceeded, which prevents collators from creating valid blocks, causing a persistent Denial of Service (DoS) on parachains using the contracts pallet.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.1.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/13702"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/cumulus/pull/2409"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "DoS by overflowing `DeletionQueue` via improper weight calculation",
+    "affected_system": "pallet-contracts",
+    "type": "Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-01-26T12:00:00Z",
+    "public": true
+  }
+}

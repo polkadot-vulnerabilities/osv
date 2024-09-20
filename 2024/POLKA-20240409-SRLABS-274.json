@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240409-SRLABS-274",
+  "modified": "2024-04-09T12:00:00Z",
+  "published": "2024-04-09T12:00:00Z",
+  "related": [],
+  "summary": "The API functions of `Mapping`, `Lazy`, and `StorageVec` structs in ink! smart contracts may raise a panic if the encoded size of the input argument exceeds `ink_env::BUFFER_SIZE`.",
+  "details": "This vulnerability arises when API functions from `Mapping`, `Lazy`, and `StorageVec` structs handle input arguments that exceed the `ink_env::BUFFER_SIZE`, leading to potential panics. Although this is not directly a security issue, it may lead to unexpected behavior in smart contracts, particularly in complex or multi-contract projects. These issues might be exploited in composable vulnerabilities related to contract-specific logic or control-flow anomalies.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "ink!",
+        "name": "ink"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "n/a"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "5.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/ink/pull/1910"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/ink/pull/2045"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Possible panic on calling API functions in ink! smart contracts",
+    "affected_system": "ink!",
+    "type": "Non-exhaustive description of fallible API",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-02-23T12:00:00Z",
+    "public": true
+  }
+}

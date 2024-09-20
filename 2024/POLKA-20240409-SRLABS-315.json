@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240409-SRLABS-315",
+  "modified": "2024-04-09T12:00:00Z",
+  "published": "2024-04-09T12:00:00Z",
+  "related": [],
+  "summary": "A high-severity vulnerability was identified in HRMP (Horizontal Relay-routed Message Passing) due to the lack of delivery fees for horizontal messages. This exposes the network to risks of excessive temporary storage usage and delays in message delivery, with the possibility of storage exhaustion on collator nodes if the destination chain is stalled.",
+  "details": "The vulnerability arises from the absence of delivery fees for horizontal messages in the HRMP configuration across `asset hub`/`bridge hub` parachains and third-party parachains. Without a cost barrier, attackers can exploit this by sending a large volume of messages, leading to excessive temporary storage usage and message delivery delays. In extreme cases, this could result in storage exhaustion on collator nodes, especially if the destination chain is under technical duress or a DoS attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.6.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.5.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1234"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Missing delivery fees for horizontal messages in HRMP",
+    "affected_system": "XCMP/HRMP",
+    "type": "Configuration Oversight / Economic Exploit",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-07-06T12:00:00Z",
+    "public": true
+  }
+}

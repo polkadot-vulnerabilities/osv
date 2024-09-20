@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240429-SRLABS-366",
+  "modified": "2024-04-29T12:00:00Z",
+  "published": "2024-04-29T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in the Message Queue pallet allows for potential double spending via reentrancy when executing overweight messages, which could lead to processing the same message twice.",
+  "details": "The Message Queue pallet can be exploited in a reentrant manner, allowing the calling of `execute_overweight` through an XCM Transact from another overweight message. If both overweight messages reside on the same page, an attacker could dispatch the inner message again using a second `execute_overweight` call, leading to double spending. This flaw poses significant risks in transaction processing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "pallet-message-queue"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.10.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.9.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/2356"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Potential double spending via reentrancy in message queue pallet",
+    "affected_system": "FRAME & XCM",
+    "type": "Double Spending",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-12-07T12:00:00Z",
+    "public": true
+  }
+}

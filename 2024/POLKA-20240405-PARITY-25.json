@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240124-PARITY-25",
+  "modified": "2024-04-05T12:00:00Z",
+  "published": "2024-04-05T12:00:00Z",
+  "related": [],
+  "summary": "An issue was detected where the `WithdrawAssets` instruction, when failing, leads to a discrepancy in the `TotalIssuance` reported by the balances pallet without altering the account balances. This discrepancy occurs due to the `NegativeImbalance` generated during the withdrawal process being dropped even if the balances operation fails (what doesn't cause XCM execution to revert the balances pallet state), thereby decreasing the total issuance incorrectly. This vulnerability has been fixed by adding transactional processing to the XCM executor.",
+  "details": "This vulnerability can lead to significant integrity issues within the chains using Balances Pallet with XCVM, specifically affecting the reliability of total issuance data. Such discrepancies undermine trust in the system's financial reporting and can have cascading effects on other systems reliant on accurate total issuance data. For example, it can lead to incorrect turnout calculation on governance referenda. Possibly in the worst case a take over via governance sniping.\nTo illustrate the potential impact, the extrinsic call [10600880-3](https://polkadot.subscan.io/extrinsic/10600880-3) shows how the usage of `LimitedTeleportAssets` that resulted in an `Attempted` event with unspecified inner data `FailedToTransactAsset`. The `WithdrawAssets` instruction fails with a `Consumer Remaining` error and should not modify the account nor `TotalIssuance`. However, it does modify the `TotalIssuance`. Summing up all accounts' balances in any of these blocks leads to zero - but non zero for the `TotalIssuance` difference. This means that `WithdrawAssets` is incorrectly implemented by the XCM executor leading to a discrepancy in the `TotalIssuance` reported by the balances pallet without altering the account balances.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0-0"
+            },
+            {
+              "fixed": "1.2.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0"
+      ],
+      "ecosystem_specific": [],
+      "database_specific": {
+        "mitigation": "To address this issue, the following steps are recommended:\n1. Upgrade to a version including [Polkadot SDK #1222](https://github.com/paritytech/polkadot-sdk/pull/1222/): the PR improve XCVM by making the instructions transactional, including the `WithdrawAssets` instruction, mitigating the risk of discrepancies during failed transactions.\n2. Pallet Balances State Fix: Update the balances pallet TotalIssuance to ensure there is no discrepancy, the correct number has to be calculated and updated via governance. This is possible by using [Polkadot SDK #3001](https://github.com/paritytech/polkadot-sdk/pull/3001). Check [this example script](https://github.com/ggwpez/substrate-scripts/blob/master/check-ti-complete.py) that can be useful to determine the TI offset.",
+        "eta": ""
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1222"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/3113"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/paritytech/polkadot-sdk/releases/tag/polkadot-v1.2.0"
+    },
+    {
+      "type": "PACKAGE",
+      "url": "https://github.com/paritytech/polkadot-sdk/releases/tag/polkadot-v1.3.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Security",
+      "contact": [
+        "security@parity.io"
+      ],
+      "type": "FINDER"
+    },
+    {
+      "name": "Patricio Calderon",
+      "contact": [
+        "patricio@parity.io"
+      ],
+      "type": "REMEDIATION_VERIFIER"
+    },
+    {
+      "name": "Parity FRAME and XCM",
+      "contact": [
+        "tech@parity.io"
+      ],
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "title": "Currency total issuance discrepancy after failed XCM Teleport",
+    "affected_system": "XCM Executor",
+    "type": "Incorrect calculation",
+    "discovery_method": "Chain data analysis and code review",
+    "discovery_date": "2024-01-24T12:00:00Z",
+    "public": "false"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240411-SRLABS-328_189",
+  "modified": "2024-04-11T12:00:00Z",
+  "published": "2024-04-11T12:00:00Z",
+  "related": [],
+  "summary": "At the moment the exponential increment is vastly insufficient to prevent a DoS attack by claiming all available solution slots.",
+  "details": "For Polkadot, if there is a base deposit of 40 DOT, with the `SignedMaxSubmissions` parameter set to 16, an attacker may very well be willing to pay this amount just to have the possibility to DoS the signed phase (by kicking out all real solution with non-feasible solutions claiming an impossibly good solution score). In other scenario, an attacker could fill up the signed phase with `SignedMaxSubmissions` (currently 16) invalid solutions. This will cost 16 * 40 DOT (currently about 5.5k USD), which is not unrealistic for an attacker to try a DoS attack, however in this scenario the unsigned election process will kick in as backup to continue operating normally. This vulnerability poses significant risks, including:\n1. DoS against signed phase by spamming the system with invalid solutions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.5.0",
+        "1.6.0",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.8.0",
+        "1.9.0",
+        "1.10.0",
+        "1.10.1"
+      ],
+      "ecosystem_specific": [],
+      "database_specific": {
+        "mitigation": "The exponential increment will have to cover a large factor in order to ensure that an attacker will never be able to occupy all solution slots in order to cause DoS. If an attacker may be willing to pay a large amount to prevent honest submitters from submitting a solution, this will require 113 increment steps with a 10% increment per step. So if `SignedMaxSubmissions` is raised, it is probably safe to assume that an attacker will not be able to kick out all valid solutions with non-feasible fake solutions, if the raise is not enough, the unsigned election process will backup the operation.",
+        "eta": "Implementing a multi-block election check, will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Parity Security",
+      "contact": [
+        "security@parity.io"
+      ],
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Giovanny Gongora",
+      "contact": [
+        "gio@parity.io"
+      ],
+      "type": "REMEDIATION_VERIFIER"
+    },
+    {
+      "name": "SRLabs",
+      "contact": [
+        "hello@srlabs.de"
+      ],
+      "type": "FINDER"
+    },
+    {
+      "name": "Parity FRAME",
+      "contact": [
+        "tech@parity.io"
+      ],
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "title": "Exponential deposit increment factor severely capped by `SignedMaxSubmissions`, effectively still allowing attackers to cause DoS by filling up all solution slots.",
+    "affected_system": "Runtime",
+    "type": "Denial of Service",
+    "discovery_method": "Internal Audit",
+    "discovery_date": "2023-08-09T12:00:00Z",
+    "public": "false"
+  }
+}

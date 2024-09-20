@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240509-SRLABS-354",
+  "modified": "2024-05-09T12:00:00Z",
+  "published": "2024-05-09T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in XCM allows attackers to abuse the `RECURSION_LIMIT` to discard overweight messages without execution, potentially causing disruptions and loss of user funds.",
+  "details": "An attacker can exploit the XCM `RECURSION_LIMIT` by triggering it and using `execute_overweight` through local calls like `pallet_xcm.execute` on Kusama. This forces the system to drop the message after partial processing, resulting in an `Outcome::Incomplete`, which incorrectly translates to `MessageExecutionStatus::Processed`. This flaw allows attackers to discard overweight messages without execution, potentially disrupting cross-chain operations and leading to the loss of user funds if the discarded message contains a reserve transfer or teleport.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.7"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.7.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.6.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/4202"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "XCM recursion limit can be abused to discard valid overweight messages without execution",
+    "affected_system": "FRAME",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-10-31T12:00:00Z",
+    "public": true
+  }
+}

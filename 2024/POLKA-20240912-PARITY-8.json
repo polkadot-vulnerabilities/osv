@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240912-PARITY-8",
+  "modified": "2024-09-12T12:00:00Z",
+  "published": "2024-09-12T12:00:00Z",
+  "related": [],
+  "summary": "A bug in the migrations pallet can cause a chain to get stuck when using Multi-Block-Migrations (MBM) with a single MBM configured.",
+  "details": "This issue occurs in chains using the `pallet-migrations` and `frame-support` system. It affects parachains by potentially causing them to become stuck due to a migration error when using a single index for the MBM feature. The bug was introduced during the development of MBM [here](https://github.com/paritytech/polkadot-sdk/pull/1781) and was discovered during debugging of [paritytech/try-runtime-cli#90](https://github.com/paritytech/try-runtime-cli/pull/90).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.16.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.15.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/5695"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1781"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://github.com/paritytech/try-runtime-cli/pull/90"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Engineering",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Chain stuck due to single index access migration error",
+    "affected_system": "pallet-migrations and frame-support",
+    "type": "Implementation Flaw",
+    "discovery_method": "Development/Debugging",
+    "discovery_date": "2024-09-12T12:00:00Z",
+    "public": true
+  }
+}

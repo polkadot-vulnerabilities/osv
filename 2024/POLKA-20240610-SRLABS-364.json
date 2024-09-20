@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240610-SRLABS-364",
+  "modified": "2024-06-10T12:00:00Z",
+  "published": "2024-06-10T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in XCMv4 and XCMv2 allows bypassing the `MAX_INSTRUCTIONS_TO_DECODE` limit, which can lead to memory exhaustion. The limit is enforced in XCMv3 but missing in XCMv4 and XCMv2.",
+  "details": "In XCMv3, a limit on the number of instructions that can be decoded for one XCM is enforced by `MAX_INSTRUCTIONS_TO_DECODE = 100`. However, this limit is not enforced in XCMv4 and XCMv2. This allows a malicious user to bypass the restriction, potentially causing memory exhaustion. The vulnerability poses a risk of Denial of Service (DoS) attacks if the limit is not enforced across all XCM versions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "xcm"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.12.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.12.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "MAX_INSTRUCTIONS_TO_DECODE check missing for XCMv4 and XCMv2",
+    "affected_system": "XCMv4, XCMv2",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-11-30T12:00:00Z",
+    "public": true
+  }
+}

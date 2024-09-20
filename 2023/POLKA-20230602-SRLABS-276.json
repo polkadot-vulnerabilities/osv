@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20230602-SRLABS-276",
+  "modified": "2023-06-02T12:00:00Z",
+  "published": "2023-06-02T12:00:00Z",
+  "related": [],
+  "summary": "Attackers can exhaust the PoV size without exceeding the proof_size weight limit. Depending on the business logic of the parachain it may be possible to permanently stall the chain by exceeding the PoV size with forced execution via on_initialize/on_idle or incoming XCM messages.",
+  "details": "The PoV size benchmarking introduced in [substrate#11637](https://github.com/paritytech/substrate/pull/11637) assumes the Trie is balanced and the number of layers is bound by `log16(Items)`. An attacker can generate specially crafted storage keys to dis-balance the Trie with a realistic amount of computational effort, resulting in more `log16(Items)` layers and thereby more node lookups than the benchmarking anticipated.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "Critical"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.9.38"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.5.0",
+        "1.6.0",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.8.0",
+        "1.9.0",
+        "1.10.0",
+        "1.10.1"
+      ],
+      "ecosystem_specific": [],
+      "database_specific": {
+        "mitigation": "There was an open issue in the monorepo to track the scope and efforts of the changes to remediate this issue: [substrate#13501](https://github.com/paritytech/substrate/issues/13501). In the meantime, you could apply to run the benchmarking with `--additional-trie-layers 20`. In the monorepo [polkadot-sdk#3002](https://github.com/paritytech/polkadot-sdk/pull/3002) was merged to introduce a initial mitigations which still are not final to fully mitigate the vulnerability.",
+        "eta": "Defininig the right amount of changes and resources to fix completely the vulnerability will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/13501"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/3002"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Security",
+      "contact": [
+        "security@parity.io"
+      ],
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Giovanny Gongora",
+      "contact": [
+        "gio@parity.io"
+      ],
+      "type": "REMEDIATION_VERIFIER"
+    },
+    {
+      "name": "SRLabs",
+      "contact": [
+        "hello@srlabs.de"
+      ],
+      "type": "FINDER"
+    },
+    {
+      "name": "Parity FRAME",
+      "contact": [
+        "tech@parity.io"
+      ],
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "title": "Proof size estimation is based on average case with balanced Trie instead of worst-case",
+    "affected_system": "Runtime",
+    "type": "Incorrect benchmarking",
+    "discovery_method": "Internal Audit",
+    "discovery_date": "2023-02-28T12:00:00Z",
+    "public": "false"
+  }
+}

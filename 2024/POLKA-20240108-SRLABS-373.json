@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240108-SRLABS-373",
+  "modified": "2024-01-08T12:00:00Z",
+  "published": "2024-01-08T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in asset conversion pool account ID derivation allows for potential hash input collisions, which can be exploited to access or drain the pool account via a backdoor mechanism.",
+  "details": "When starting an asset conversion pool, the account ID is derived via PoolLocator from the runtime configuration. If another pallet uses a similar account derivation scheme based on `blake2_256` and is tricked into generating an account ID using the same hash input as the asset conversion pool, it may lead to unauthorized access to the pool. This design flaw exposes the pool to potential draining through collision in the hash input used for deriving the account ID.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.8.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.7.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/3250"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Potential hash input collisions in asset conversion pool account ID derivation",
+    "affected_system": "FRAME",
+    "type": "Unsafe Design",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2024-01-08T12:00:00Z",
+    "public": true
+  }
+}

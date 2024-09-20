@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240509-SRLABS-339",
+  "modified": "2024-05-09T12:00:00Z",
+  "published": "2024-05-09T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in the `pallet-session` package allows attackers to exploit the `set_keys()` extrinsic due to the lack of proof validation in `ownership_proof_is_valid()`, enabling a potential denial-of-service (DoS) attack by front-running legitimate validator transactions.",
+  "details": "The `set_keys()` extrinsic in the `pallet-session` package invokes the default implementation of `ownership_proof_is_valid()`, which does not perform any proof validation and always returns `true`. This flaw can be exploited by attackers who monitor the network's gossip protocol for `set_key` transactions and submit their own transaction with a higher fee to front-run legitimate validators. This prevents legitimate validators from updating or setting their keys, disrupting normal operations and compromising transaction processing integrity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "pallet-session"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.7.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.7.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1739"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Lack of key's ownership proof might lead to denial-of-service in `pallet-session`",
+    "affected_system": "pallet-session",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-08-31T12:00:00Z",
+    "public": true
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20230714-SRLABS-235",
+  "modified": "2023-07-14T12:00:00Z",
+  "published": "2023-07-14T12:00:00Z",
+  "related": [],
+  "summary": "Attackers can exceed allowable block execution time without exceeding block size/weight limits.",
+  "details": "Appending an item to a `Vec` storage item via `StorageValue.append` is supposed to be fast with the execution time not depending on the number of items already existing in the storage value. However this assumption is no longer valid with transactional processing since the first modification of a storage value within a transaction will require cloning the value so that changes can be rolled back when needed. This means that appending N items have a worst case memory complexity of `O(N**2)` since each appending could require cloning all pre-existing items.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "Critical"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.8.25"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.5.0",
+        "1.6.0",
+        "1.7.0",
+        "1.7.1",
+        "1.7.2",
+        "1.8.0",
+        "1.9.0",
+        "1.10.0",
+        "1.10.1"
+      ],
+      "ecosystem_specific": [],
+      "database_specific": {
+        "mitigation": "Before the monorepo, two open pull request were open to track the scope and efforts of the changes to remediate this issue: [substrate#13940](https://github.com/paritytech/substrate/pull/13940) & [substrate#14120](https://github.com/paritytech/substrate/pull/14120). There is a new PR tracking the fix for this vulnerability: [polkadot-sdk#1223](https://github.com/paritytech/polkadot-sdk/pull/1223).",
+        "eta": "Defininig the right amount of changes and resources to fix completely the vulnerability will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/13940"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/14120"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1223"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Security",
+      "contact": [
+        "security@parity.io"
+      ],
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Giovanny Gongora",
+      "contact": [
+        "gio@parity.io"
+      ],
+      "type": "REMEDIATION_VERIFIER"
+    },
+    {
+      "name": "SRLabs",
+      "contact": [
+        "hello@srlabs.de"
+      ],
+      "type": "FINDER"
+    },
+    {
+      "name": "Parity FRAME",
+      "contact": [
+        "tech@parity.io"
+      ],
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "title": "Non-constant execution time of transactional appending to storage Vec leads to DoS",
+    "affected_system": "FRAME",
+    "type": "Performance degradation",
+    "discovery_method": "Internal Audit",
+    "discovery_date": "2022-10-20T12:00:00Z",
+    "public": "false"
+  }
+}

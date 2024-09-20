@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240509-SRLABS-327",
+  "modified": "2024-05-09T12:00:00Z",
+  "published": "2024-05-09T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in `pallet-staking` allows excess nominators to be clipped from a validator's exposure list, excluding them from slashing consequences and potentially disrupting staking revenue.",
+  "details": "In `pallet-staking`, if there are more than 512 nominators for a given validator, the excess nominators are clipped from the exposure list and are not subject to slashing. The election provider does not recognize this limit and may approve election outcomes with more than 512 nominators. This discrepancy allows a portion of the stake to avoid slashing and can also be exploited to disrupt staking revenue by overloading a validator with excess nominators. The issue has been resolved after a significant delay, requiring disclosure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "pallet-staking"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.4.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.3.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1189"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Clipping of nominators allows avoiding of slashing and disruption of staking revenue",
+    "affected_system": "pallet-staking",
+    "type": "Configuration/Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-08-09T12:00:00Z",
+    "public": true
+  }
+}

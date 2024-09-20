@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240506-SRLABS-5",
+  "modified": "2024-05-06T12:00:00Z",
+  "published": "2024-05-06T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in Substrate's Trie Database allows high-effort Denial of Service (DoS) attacks by adding nodes with colliding prefixes, degrading database performance and causing excessive trie lookups.",
+  "details": "This vulnerability allows attackers to perform high-effort DoS attacks on Substrate's Trie Database by adding nodes with colliding prefixes. This attack forces the trie lookup to traverse an excessive number of nodes for specific account IDs, simulating the load of an abnormally large database. This results in degraded performance, increasing the PoV size, and affecting the network's stability and scalability.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Substrate",
+        "name": "substrate-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.5"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://paritytech.github.io/polkadot-sdk/master/frame_support/storage/types/struct.StorageMap.html"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    },
+    {
+      "type": "IMPACT_ANALYSIS",
+      "url": "https://docs.google.com/spreadsheets/d/1jpX7GYhZEaT6hqE1vHEXTY3dT1ArJ0TMBruVF0VQgKY/edit#gid=1656252643"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "DoS Attacks via Trie Prefix Collisions",
+    "affected_system": "Substrate's Trie Database",
+    "type": "Denial of Service (DoS)",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2020-11-04T12:00:00Z",
+    "public": true
+  }
+}

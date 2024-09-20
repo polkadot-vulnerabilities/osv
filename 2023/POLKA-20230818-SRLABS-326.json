@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20230818-SRLABS-326",
+  "modified": "2023-08-18T12:00:00Z",
+  "published": "2023-08-18T12:00:00Z",
+  "related": [],
+  "summary": "The limit MAX_ITEMS_IN_MULTIASSETS is not enforced, allowing a single WithdrawAsset instruction to withdraw a large number of assets simultaneously, consuming significant weight and potentially leading to a Denial of Service (DoS).",
+  "details": "This vulnerability arises from the missing enforcement of the MAX_ITEMS_IN_MULTIASSETS limit in XCM. As a result, attackers can exploit this flaw to execute a single WithdrawAsset instruction that withdraws an excessive number of assets at once, leading to high resource consumption and potentially overwhelming the system.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "xcm"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.5"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.3.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v2",
+        "v3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/1227"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Internal Audit",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Missing enforcement for MAX_ITEMS_IN_MULTIASSETS",
+    "affected_system": "XCM",
+    "type": "Denial of Service (DoS)",
+    "discovery_method": "Internal Audit",
+    "discovery_date": "2023-08-03T12:00:00Z",
+    "public": true
+  }
+}

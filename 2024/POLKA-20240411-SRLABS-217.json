@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240411-SRLABS-217",
+  "modified": "2024-04-11T12:00:00Z",
+  "published": "2024-04-11T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in the XCM system allows third-party accounts to mint an indefinite amount of new tokens and create up to 2**32 sufficient accounts without paying an adequate storage deposit, leading to potential storage exhaustion in the parachain.",
+  "details": "If the `min_balance` value is set too low, an unprivileged third-party can exploit this vulnerability by purchasing assets and distributing them to millions of fake accounts, exhausting storage resources in the parachain. This occurs when a sufficient asset setting is enabled, allowing for assets to be held without a corresponding storage deposit. The exploit results in a large number of accounts consuming storage without adequate compensation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "xcm"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.2.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Storage exhaustion via sufficient assets with very low min_balance",
+    "affected_system": "XCM",
+    "type": "Storage Exhaustion",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2022-07-20T12:00:00Z",
+    "public": true
+  }
+}

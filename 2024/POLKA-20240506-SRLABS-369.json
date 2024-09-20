@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240506-SRLABS-369",
+  "modified": "2024-05-06T12:00:00Z",
+  "published": "2024-05-06T12:00:00Z",
+  "related": [],
+  "summary": "`add_delegate_dependency` API in `pallet-contracts` is not supported in ink!, preventing smart contract developers from using this feature.",
+  "details": "The `add_delegate_dependency` API provided by `pallet-contracts` is not supported in ink!, which restricts smart contract developers from accessing this functionality. This limitation can lead to vulnerabilities in delegate call workflows and interfere with legitimate contract upgrades.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "ink!",
+        "name": "ink"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "5.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "4.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/ink/pull/2076"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "`add_delegate_dependency` not supported by ink!",
+    "affected_system": "pallet-contracts",
+    "type": "Missing Feature",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2023-12-20T12:00:00Z",
+    "public": true
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240409-SRLABS-35",
+  "modified": "2024-04-09T12:00:00Z",
+  "published": "2024-04-09T12:00:00Z",
+  "related": [],
+  "summary": "A vulnerability in the account management system allows nonce reuse and transaction replay for accounts that have been reaped and subsequently re-funded, potentially enabling attackers to steal newly deposited funds.",
+  "details": "This vulnerability arises when an account's balance falls below the existential deposit, leading to its removal from the database without retaining the last nonce value. If the account is later re-funded, previously valid transactions could be replayed, allowing attackers to steal the newly deposited funds. Discouraging the use of immortal transactions and warning users about the risks of reusing reaped accounts can mitigate this risk.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "5.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/4034"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Nonce reuse/transaction replay possible if address gets reaped and reused later",
+    "affected_system": "All",
+    "type": "Transaction Replay/Nonce Reuse",
+    "discovery_method": "Documentation Review and System Analysis",
+    "discovery_date": "2021-01-08T12:00:00Z",
+    "public": true
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20240405-SRLABS-246",
+  "modified": "2024-04-05T12:00:00Z",
+  "published": "2024-04-05T12:00:00Z",
+  "related": [],
+  "summary": "Attackers can break the `delegate_call` workflow by uploading target code first and removing it later, temporarily breaking the functionality of legitimate smart contracts.",
+  "details": "This vulnerability affects all parachains using `pallet-contracts` and relates to an implementation flaw in the `delegate_call` function. Attackers can exploit the system by being the first to upload target code and later removing the code, which disrupts the `delegate_call` workflow. This breaks the functionality implemented in legitimate smart contracts until the code is re-uploaded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "6.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.1.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "v1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/14079"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/cumulus/pull/2913"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Implementation flaw in `delegate_call`",
+    "affected_system": "pallet-contracts",
+    "type": "Implementation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2022-11-17T12:00:00Z",
+    "public": true
+  }
+}
