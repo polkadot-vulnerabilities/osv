@@ -1,0 +1,50 @@
+name: Concat vulns and update all.json
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  TARGET_FILE: all.json
+
+permissions:
+  contents: write
+
+jobs:
+  concat-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Concatenate JSON files
+        run: |
+          echo '{ "vulns": [' > $TARGET_FILE
+          first=true
+          for file in $(find . -type f -path "./[0-9][0-9][0-9][0-9]/*.json"); do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo ',' >> $TARGET_FILE
+            fi
+            cat "$file" >> $TARGET_FILE
+          done
+          echo ']}' >> $TARGET_FILE
+          jq . $TARGET_FILE > temp.json && mv temp.json $TARGET_FILE
+
+      - name: Check for changes
+        id: git-diff
+        run: |
+          git diff --quiet || echo "has_changes=true" >> $GITHUB_ENV
+
+      - name: Commit and push if changed
+        if: env.has_changes == 'true'
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add $TARGET_FILE
+          git commit -m 'Update all.json with concatenated JSON data'
+          git push
