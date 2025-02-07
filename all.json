@@ -1,2 +1,2082 @@
-{ "vulns": [
-]}
+{
+  "vulns": [
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240429-SRLABS-316",
+      "modified": "2024-04-29T12:00:00Z",
+      "published": "2024-04-29T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in FRAME allows a single maximum-sized message to stall an HRMP (Horizontal Relay-routed Message Passing) channel, causing a permanent blockage in message transmission.",
+      "details": "This vulnerability occurs when a message that exactly reaches the maximum allowed size is sent. The additional encoding data causes the message size to exceed the limit, resulting in the message being stored in a new page that is too large to be transmitted via HRMP. Since the outbound details for the channel are not updated, the channel becomes permanently stalled, blocking further message transmission. This issue was resolved after an extended period, requiring disclosure.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "8.5"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.4.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.3.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1250"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Sending one single maximum-sized message will persistently stall HRMP channel",
+        "affected_system": "FRAME",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-07-06T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240405-SRLABS-262",
+      "modified": "2024-04-05T12:00:00Z",
+      "published": "2024-04-05T12:00:00Z",
+      "related": [],
+      "summary": "The weight calculation for deletions in `DeletionQueue` is based on execution time rather than proof size, potentially leading to exceeding permissible proof sizes and causing collators to be unable to produce valid blocks for the affected parachain.",
+      "details": "The vulnerability lies in how the `DeletionQueue` calculates weight based on execution time rather than the required proof size for iterating through all storage entries to be deleted. This flaw can result in the proof size limit being exceeded, which prevents collators from creating valid blocks, causing a persistent Denial of Service (DoS) on parachains using the contracts pallet.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.1.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/13702"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/cumulus/pull/2409"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "DoS by overflowing `DeletionQueue` via improper weight calculation",
+        "affected_system": "pallet-contracts",
+        "type": "Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-01-26T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240405-SRLABS-341",
+      "modified": "2024-04-05T12:00:00Z",
+      "published": "2024-04-05T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in XCM processing can lead to memory exhaustion during the decoding of XCM instructions in `pallet_xcm.send` and `pallet_xcm.execute` calls, potentially allowing attackers to monopolize block production through transaction censorship.",
+      "details": "This vulnerability arises when decoding XCM instructions, where instructions like `ClearOrigin` encode to a single byte but decode to an in-memory size of 1344 bytes. This discrepancy results in extensive memory usage when processing large XCM payloads, potentially causing the wasm runtime to run out of memory and invalidate the block. While XCMv4 reduces the in-memory size from 1344 to 96 bytes, the vulnerability remains for XCMv2/XCMv3 payloads. Attackers can exploit this to cause memory exhaustion, leading to block invalidation or transaction censorship by monopolizing block production.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.7.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.6.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1230"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/3749"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Memory exhaustion via XCM decoding overhead in `pallet_xcm.execute`/`pallet_xcm.send` calls",
+        "affected_system": "XCM v3/v2",
+        "type": "Memory Exhaustion / Denial of Service (DoS)",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-08-31T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240610-SRLABS-367",
+      "modified": "2024-06-10T12:00:00Z",
+      "published": "2024-06-10T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in `xcmp-queue` allows messages exceeding the `MaxXcmpMessageLenOf<T>` limit to be dropped, potentially leading to loss of user funds when handling reserve transfers or teleports.",
+      "details": "In the `xcmp-queue` pallet, messages are queued and processed based on their size. If the total size of the messages exceeds the `MaxXcmpMessageLenOf<T>` limit, the conversion to a `BoundedVec` fails, causing all messages within the same page to be dropped. This issue can be exploited by malicious users to trigger selective message drops, potentially leading to a loss of user funds if the dropped messages contain reserve transfers or teleports.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "xcmp-queue"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "8.6"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.12.1"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.12.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Sending size limit not sufficient to prevent dropping of messages on destination side",
+        "affected_system": "xcmp-queue",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-12-18T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240509-SRLABS-339",
+      "modified": "2024-05-09T12:00:00Z",
+      "published": "2024-05-09T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in the `pallet-session` package allows attackers to exploit the `set_keys()` extrinsic due to the lack of proof validation in `ownership_proof_is_valid()`, enabling a potential denial-of-service (DoS) attack by front-running legitimate validator transactions.",
+      "details": "The `set_keys()` extrinsic in the `pallet-session` package invokes the default implementation of `ownership_proof_is_valid()`, which does not perform any proof validation and always returns `true`. This flaw can be exploited by attackers who monitor the network's gossip protocol for `set_key` transactions and submit their own transaction with a higher fee to front-run legitimate validators. This prevents legitimate validators from updating or setting their keys, disrupting normal operations and compromising transaction processing integrity.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "pallet-session"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.7.1"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.7.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1739"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Lack of key's ownership proof might lead to denial-of-service in `pallet-session`",
+        "affected_system": "pallet-session",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-08-31T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240124-PARITY-25",
+      "modified": "2024-04-05T12:00:00Z",
+      "published": "2024-04-05T12:00:00Z",
+      "related": [],
+      "summary": "An issue was detected where the `WithdrawAssets` instruction, when failing, leads to a discrepancy in the `TotalIssuance` reported by the balances pallet without altering the account balances. This discrepancy occurs due to the `NegativeImbalance` generated during the withdrawal process being dropped even if the balances operation fails (what doesn't cause XCM execution to revert the balances pallet state), thereby decreasing the total issuance incorrectly. This vulnerability has been fixed by adding transactional processing to the XCM executor.",
+      "details": "This vulnerability can lead to significant integrity issues within the chains using Balances Pallet with XCVM, specifically affecting the reliability of total issuance data. Such discrepancies undermine trust in the system's financial reporting and can have cascading effects on other systems reliant on accurate total issuance data. For example, it can lead to incorrect turnout calculation on governance referenda. Possibly in the worst case a take over via governance sniping.\nTo illustrate the potential impact, the extrinsic call [10600880-3](https://polkadot.subscan.io/extrinsic/10600880-3) shows how the usage of `LimitedTeleportAssets` that resulted in an `Attempted` event with unspecified inner data `FailedToTransactAsset`. The `WithdrawAssets` instruction fails with a `Consumer Remaining` error and should not modify the account nor `TotalIssuance`. However, it does modify the `TotalIssuance`. Summing up all accounts' balances in any of these blocks leads to zero - but non zero for the `TotalIssuance` difference. This means that `WithdrawAssets` is incorrectly implemented by the XCM executor leading to a discrepancy in the `TotalIssuance` reported by the balances pallet without altering the account balances.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0-0"
+                },
+                {
+                  "fixed": "1.2.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.1.0"
+          ],
+          "ecosystem_specific": [],
+          "database_specific": {
+            "mitigation": "To address this issue, the following steps are recommended:\n1. Upgrade to a version including [Polkadot SDK #1222](https://github.com/paritytech/polkadot-sdk/pull/1222/): the PR improve XCVM by making the instructions transactional, including the `WithdrawAssets` instruction, mitigating the risk of discrepancies during failed transactions.\n2. Pallet Balances State Fix: Update the balances pallet TotalIssuance to ensure there is no discrepancy, the correct number has to be calculated and updated via governance. This is possible by using [Polkadot SDK #3001](https://github.com/paritytech/polkadot-sdk/pull/3001). Check [this example script](https://github.com/ggwpez/substrate-scripts/blob/master/check-ti-complete.py) that can be useful to determine the TI offset.",
+            "eta": ""
+          }
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1222"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/3113"
+        },
+        {
+          "type": "PACKAGE",
+          "url": "https://github.com/paritytech/polkadot-sdk/releases/tag/polkadot-v1.2.0"
+        },
+        {
+          "type": "PACKAGE",
+          "url": "https://github.com/paritytech/polkadot-sdk/releases/tag/polkadot-v1.3.0"
+        }
+      ],
+      "credits": [
+        {
+          "name": "Parity Security",
+          "contact": [
+            "security@parity.io"
+          ],
+          "type": "FINDER"
+        },
+        {
+          "name": "Patricio Calderon",
+          "contact": [
+            "patricio@parity.io"
+          ],
+          "type": "REMEDIATION_VERIFIER"
+        },
+        {
+          "name": "Parity FRAME and XCM",
+          "contact": [
+            "tech@parity.io"
+          ],
+          "type": "REMEDIATION_DEVELOPER"
+        }
+      ],
+      "database_specific": {
+        "title": "Currency total issuance discrepancy after failed XCM Teleport",
+        "affected_system": "XCM Executor",
+        "type": "Incorrect calculation",
+        "discovery_method": "Chain data analysis and code review",
+        "discovery_date": "2024-01-24T12:00:00Z",
+        "public": "false"
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240411-SRLABS-215",
+      "modified": "2024-04-11T12:00:00Z",
+      "published": "2024-04-11T12:00:00Z",
+      "related": [],
+      "summary": "At the moment the exponential increment is vastly insufficient to prevent a DoS attack by claiming all available solution slots.",
+      "details": "For Polkadot, if there is a base deposit of 40 DOT, with the `SignedMaxSubmissions` parameter set to 16, an attacker may very well be willing to pay this amount just to have the possibility to DoS the signed phase (by kicking out all real solution with non-feasible solutions claiming an impossibly good solution score). In other scenario, an attacker could fill up the signed phase with `SignedMaxSubmissions` (currently 16) invalid solutions. This will cost 16 * 40 DOT (currently about 5.5k USD), which is not unrealistic for an attacker to try a DoS attack, however in this scenario the unsigned election process will kick in as backup to continue operating normally. This vulnerability poses significant risks, including:\n1. DoS against signed phase by spamming the system with invalid solutions.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.1.0",
+            "1.2.0",
+            "1.3.0",
+            "1.4.0",
+            "1.5.0",
+            "1.6.0",
+            "1.7.0",
+            "1.7.1",
+            "1.7.2",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.10.1"
+          ],
+          "ecosystem_specific": [],
+          "database_specific": {
+            "mitigation": "The exponential increment will have to cover a large factor in order to ensure that an attacker will never be able to occupy all solution slots in order to cause DoS. If an attacker may be willing to pay a large amount to prevent honest submitters from submitting a solution, this will require 113 increment steps with a 10% increment per step. So if `SignedMaxSubmissions` is raised, it is probably safe to assume that an attacker will not be able to kick out all valid solutions with non-feasible fake solutions, if the raise is not enough, the unsigned election process will backup the operation.",
+            "eta": "Implementing a multi-block election check, will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+          }
+        }
+      ],
+      "references": [],
+      "credits": [
+        {
+          "name": "Parity Security",
+          "contact": [
+            "security@parity.io"
+          ],
+          "type": "COORDINATOR"
+        },
+        {
+          "name": "Giovanny Gongora",
+          "contact": [
+            "gio@parity.io"
+          ],
+          "type": "REMEDIATION_VERIFIER"
+        },
+        {
+          "name": "SRLabs",
+          "contact": [
+            "hello@srlabs.de"
+          ],
+          "type": "FINDER"
+        },
+        {
+          "name": "Parity FRAME",
+          "contact": [
+            "tech@parity.io"
+          ],
+          "type": "REMEDIATION_DEVELOPER"
+        }
+      ],
+      "database_specific": {
+        "title": "Discrepancy between economic value of minimum asset balance may allow evading fee payment",
+        "affected_system": "XCM & FRAME",
+        "type": "Denial of Service",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2022-07-20T12:00:00Z",
+        "public": "false"
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240411-SRLABS-328_189",
+      "modified": "2024-04-11T12:00:00Z",
+      "published": "2024-04-11T12:00:00Z",
+      "related": [],
+      "summary": "At the moment the exponential increment is vastly insufficient to prevent a DoS attack by claiming all available solution slots.",
+      "details": "For Polkadot, if there is a base deposit of 40 DOT, with the `SignedMaxSubmissions` parameter set to 16, an attacker may very well be willing to pay this amount just to have the possibility to DoS the signed phase (by kicking out all real solution with non-feasible solutions claiming an impossibly good solution score). In other scenario, an attacker could fill up the signed phase with `SignedMaxSubmissions` (currently 16) invalid solutions. This will cost 16 * 40 DOT (currently about 5.5k USD), which is not unrealistic for an attacker to try a DoS attack, however in this scenario the unsigned election process will kick in as backup to continue operating normally. This vulnerability poses significant risks, including:\n1. DoS against signed phase by spamming the system with invalid solutions.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.1.0",
+            "1.2.0",
+            "1.3.0",
+            "1.4.0",
+            "1.5.0",
+            "1.6.0",
+            "1.7.0",
+            "1.7.1",
+            "1.7.2",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.10.1"
+          ],
+          "ecosystem_specific": [],
+          "database_specific": {
+            "mitigation": "The exponential increment will have to cover a large factor in order to ensure that an attacker will never be able to occupy all solution slots in order to cause DoS. If an attacker may be willing to pay a large amount to prevent honest submitters from submitting a solution, this will require 113 increment steps with a 10% increment per step. So if `SignedMaxSubmissions` is raised, it is probably safe to assume that an attacker will not be able to kick out all valid solutions with non-feasible fake solutions, if the raise is not enough, the unsigned election process will backup the operation.",
+            "eta": "Implementing a multi-block election check, will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+          }
+        }
+      ],
+      "references": [],
+      "credits": [
+        {
+          "name": "Parity Security",
+          "contact": [
+            "security@parity.io"
+          ],
+          "type": "COORDINATOR"
+        },
+        {
+          "name": "Giovanny Gongora",
+          "contact": [
+            "gio@parity.io"
+          ],
+          "type": "REMEDIATION_VERIFIER"
+        },
+        {
+          "name": "SRLabs",
+          "contact": [
+            "hello@srlabs.de"
+          ],
+          "type": "FINDER"
+        },
+        {
+          "name": "Parity FRAME",
+          "contact": [
+            "tech@parity.io"
+          ],
+          "type": "REMEDIATION_DEVELOPER"
+        }
+      ],
+      "database_specific": {
+        "title": "Exponential deposit increment factor severely capped by `SignedMaxSubmissions`, effectively still allowing attackers to cause DoS by filling up all solution slots.",
+        "affected_system": "Runtime",
+        "type": "Denial of Service",
+        "discovery_method": "Internal Audit",
+        "discovery_date": "2023-08-09T12:00:00Z",
+        "public": "false"
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240405-SRLABS-261",
+      "modified": "2024-04-05T12:00:00Z",
+      "published": "2024-04-05T12:00:00Z",
+      "related": [],
+      "summary": "Overflowing the bounded `DeletionQueue` allows for a Denial of Service (DoS) attack against contract termination in parachains using `pallet-contracts`. If too many contracts are terminated in a short time, further termination attempts fail.",
+      "details": "This vulnerability occurs when the bounded `DeletionQueue`, set by `DeletionQueueDepth`, is exceeded. For example, in the test runtime, this depth is set to 128. If more than this number of contracts is terminated in a short period, subsequent attempts to terminate additional contracts will fail. This can allow attackers to prevent legitimate contract termination, effectively locking up the remaining balance and storage deposit of affected contracts.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.1.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/13702"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "DoS by overflowing `DeletionQueue`",
+        "affected_system": "pallet-contracts",
+        "type": "Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-01-26T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240912-PARITY-8",
+      "modified": "2024-09-12T12:00:00Z",
+      "published": "2024-09-12T12:00:00Z",
+      "related": [],
+      "summary": "A bug in the migrations pallet can cause a chain to get stuck when using Multi-Block-Migrations (MBM) with a single MBM configured.",
+      "details": "This issue occurs in chains using the `pallet-migrations` and `frame-support` system. It affects parachains by potentially causing them to become stuck due to a migration error when using a single index for the MBM feature. The bug was introduced during the development of MBM [here](https://github.com/paritytech/polkadot-sdk/pull/1781) and was discovered during debugging of [paritytech/try-runtime-cli#90](https://github.com/paritytech/try-runtime-cli/pull/90).",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.16.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.15.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/5695"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1781"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://github.com/paritytech/try-runtime-cli/pull/90"
+        }
+      ],
+      "credits": [
+        {
+          "name": "Parity Engineering",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Chain stuck due to single index access migration error",
+        "affected_system": "pallet-migrations and frame-support",
+        "type": "Implementation Flaw",
+        "discovery_method": "Development/Debugging",
+        "discovery_date": "2024-09-12T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240506-SRLABS-5",
+      "modified": "2024-05-06T12:00:00Z",
+      "published": "2024-05-06T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in Substrate's Trie Database allows high-effort Denial of Service (DoS) attacks by adding nodes with colliding prefixes, degrading database performance and causing excessive trie lookups.",
+      "details": "This vulnerability allows attackers to perform high-effort DoS attacks on Substrate's Trie Database by adding nodes with colliding prefixes. This attack forces the trie lookup to traverse an excessive number of nodes for specific account IDs, simulating the load of an abnormally large database. This results in degraded performance, increasing the PoV size, and affecting the network's stability and scalability.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Substrate",
+            "name": "substrate-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.5"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://paritytech.github.io/polkadot-sdk/master/frame_support/storage/types/struct.StorageMap.html"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        },
+        {
+          "type": "IMPACT_ANALYSIS",
+          "url": "https://docs.google.com/spreadsheets/d/1jpX7GYhZEaT6hqE1vHEXTY3dT1ArJ0TMBruVF0VQgKY/edit#gid=1656252643"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "DoS Attacks via Trie Prefix Collisions",
+        "affected_system": "Substrate's Trie Database",
+        "type": "Denial of Service (DoS)",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2020-11-04T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240409-SRLABS-315",
+      "modified": "2024-04-09T12:00:00Z",
+      "published": "2024-04-09T12:00:00Z",
+      "related": [],
+      "summary": "A high-severity vulnerability was identified in HRMP (Horizontal Relay-routed Message Passing) due to the lack of delivery fees for horizontal messages. This exposes the network to risks of excessive temporary storage usage and delays in message delivery, with the possibility of storage exhaustion on collator nodes if the destination chain is stalled.",
+      "details": "The vulnerability arises from the absence of delivery fees for horizontal messages in the HRMP configuration across `asset hub`/`bridge hub` parachains and third-party parachains. Without a cost barrier, attackers can exploit this by sending a large volume of messages, leading to excessive temporary storage usage and message delivery delays. In extreme cases, this could result in storage exhaustion on collator nodes, especially if the destination chain is under technical duress or a DoS attack.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.6.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.5.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1234"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Missing delivery fees for horizontal messages in HRMP",
+        "affected_system": "XCMP/HRMP",
+        "type": "Configuration Oversight / Economic Exploit",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-07-06T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240610-SRLABS-364",
+      "modified": "2024-06-10T12:00:00Z",
+      "published": "2024-06-10T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in XCMv4 and XCMv2 allows bypassing the `MAX_INSTRUCTIONS_TO_DECODE` limit, which can lead to memory exhaustion. The limit is enforced in XCMv3 but missing in XCMv4 and XCMv2.",
+      "details": "In XCMv3, a limit on the number of instructions that can be decoded for one XCM is enforced by `MAX_INSTRUCTIONS_TO_DECODE = 100`. However, this limit is not enforced in XCMv4 and XCMv2. This allows a malicious user to bypass the restriction, potentially causing memory exhaustion. The vulnerability poses a risk of Denial of Service (DoS) attacks if the limit is not enforced across all XCM versions.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "xcm"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.12.1"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.12.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "MAX_INSTRUCTIONS_TO_DECODE check missing for XCMv4 and XCMv2",
+        "affected_system": "XCMv4, XCMv2",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-11-30T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240320-SRLABS-342",
+      "modified": "2024-03-20T12:00:00Z",
+      "published": "2024-03-20T12:00:00Z",
+      "related": [],
+      "summary": "A critical vulnerability in XCM processing was discovered, where all message delivery fee payments were disabled due to the `FeeManager` being set to `()`. This flaw allowed attackers to cause network congestion without incurring costs.",
+      "details": "The vulnerability stems from the configuration of the `FeeManager` in XCVM, which was set to `()`, effectively disabling all message delivery fee payments. This omission rendered fee-based congestion control ineffective, allowing attackers to congest the network, resulting in long delivery delays, storage exhaustion, and dropping of messages. While the issue has been addressed, it took over five days to resolve, highlighting the importance of this disclosure.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.6.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.5.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1234"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1556"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "All message delivery fee payments disabled via type `FeeManager = ()`",
+        "affected_system": "XCM",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-09-11T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240509-SRLABS-354",
+      "modified": "2024-05-09T12:00:00Z",
+      "published": "2024-05-09T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in XCM allows attackers to abuse the `RECURSION_LIMIT` to discard overweight messages without execution, potentially causing disruptions and loss of user funds.",
+      "details": "An attacker can exploit the XCM `RECURSION_LIMIT` by triggering it and using `execute_overweight` through local calls like `pallet_xcm.execute` on Kusama. This forces the system to drop the message after partial processing, resulting in an `Outcome::Incomplete`, which incorrectly translates to `MessageExecutionStatus::Processed`. This flaw allows attackers to discard overweight messages without execution, potentially disrupting cross-chain operations and leading to the loss of user funds if the discarded message contains a reserve transfer or teleport.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.7"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.7.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.6.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/4202"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "XCM recursion limit can be abused to discard valid overweight messages without execution",
+        "affected_system": "FRAME",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-10-31T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240429-SRLABS-201",
+      "modified": "2024-04-29T12:00:00Z",
+      "published": "2024-04-29T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in DMP processing allows an attacker to perform a Denial of Service (DoS) attack against parachains by queuing a large number of messages, leading to memory exhaustion and preventing new block production.",
+      "details": "This vulnerability occurs when an attacker prevents block production on a parachain for several relay chain blocks, such as through a network-level DoS attack or by intentionally failing to make chunks for a candidate block available. This leads to an accumulation of pending messages to a parachain. When there are too many pending messages, the parachain becomes unable to produce new blocks due to exceeding the PoV size limit while attempting to process the queued messages in a single block. The only recovery method is through governance intervention on the relay chain.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.10.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.9.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot/pull/6843"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1246"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "DMP processing allows persistent DoS against parachains",
+        "affected_system": "XCM/FRAME",
+        "type": "DoS and Memory Exhaustion",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2022-05-25T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240411-SRLABS-217",
+      "modified": "2024-04-11T12:00:00Z",
+      "published": "2024-04-11T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in the XCM system allows third-party accounts to mint an indefinite amount of new tokens and create up to 2**32 sufficient accounts without paying an adequate storage deposit, leading to potential storage exhaustion in the parachain.",
+      "details": "If the `min_balance` value is set too low, an unprivileged third-party can exploit this vulnerability by purchasing assets and distributing them to millions of fake accounts, exhausting storage resources in the parachain. This occurs when a sufficient asset setting is enabled, allowing for assets to be held without a corresponding storage deposit. The exploit results in a large number of accounts consuming storage without adequate compensation.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "xcm"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.2.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v3"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Storage exhaustion via sufficient assets with very low min_balance",
+        "affected_system": "XCM",
+        "type": "Storage Exhaustion",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2022-07-20T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240429-SRLABS-366",
+      "modified": "2024-04-29T12:00:00Z",
+      "published": "2024-04-29T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in the Message Queue pallet allows for potential double spending via reentrancy when executing overweight messages, which could lead to processing the same message twice.",
+      "details": "The Message Queue pallet can be exploited in a reentrant manner, allowing the calling of `execute_overweight` through an XCM Transact from another overweight message. If both overweight messages reside on the same page, an attacker could dispatch the inner message again using a second `execute_overweight` call, leading to double spending. This flaw poses significant risks in transaction processing.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "pallet-message-queue"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.10.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.9.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/2356"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Potential double spending via reentrancy in message queue pallet",
+        "affected_system": "FRAME & XCM",
+        "type": "Double Spending",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-12-07T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240509-SRLABS-353",
+      "modified": "2024-05-09T12:00:00Z",
+      "published": "2024-05-09T12:00:00Z",
+      "related": [],
+      "summary": "A high-severity vulnerability in XCMP (Cross Chain Message Passing) channels allows attackers to disable them by flooding with overweight messages, causing Denial of Service (DoS) conditions and requiring manual intervention to resolve.",
+      "details": "This vulnerability occurs when attackers flood XCMP channels with overweight messages that remain in storage indefinitely, causing congestion and Denial of Service (DoS) due to HRMP congestion control mechanisms. Without an automated system for removing cullable pages, the issue requires manual intervention, which can take hours to resolve. Even with automatic reaping of cullable pages, a significant number of overweight pages can persist, potentially leading to a permanent halt of the XCMP channel if the congestion control system suspends the source chain.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "8.5"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.9.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.8.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/2393"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Stale pages counted for congestion control prevent XCMP channel resumption",
+        "affected_system": "FRAME",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-10-26T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240509-SRLABS-327",
+      "modified": "2024-05-09T12:00:00Z",
+      "published": "2024-05-09T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in `pallet-staking` allows excess nominators to be clipped from a validator's exposure list, excluding them from slashing consequences and potentially disrupting staking revenue.",
+      "details": "In `pallet-staking`, if there are more than 512 nominators for a given validator, the excess nominators are clipped from the exposure list and are not subject to slashing. The election provider does not recognize this limit and may approve election outcomes with more than 512 nominators. This discrepancy allows a portion of the stake to avoid slashing and can also be exploited to disrupt staking revenue by overloading a validator with excess nominators. The issue has been resolved after a significant delay, requiring disclosure.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "pallet-staking"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.4.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.3.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1189"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Clipping of nominators allows avoiding of slashing and disruption of staking revenue",
+        "affected_system": "pallet-staking",
+        "type": "Configuration/Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-08-09T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240108-SRLABS-373",
+      "modified": "2024-01-08T12:00:00Z",
+      "published": "2024-01-08T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in asset conversion pool account ID derivation allows for potential hash input collisions, which can be exploited to access or drain the pool account via a backdoor mechanism.",
+      "details": "When starting an asset conversion pool, the account ID is derived via PoolLocator from the runtime configuration. If another pallet uses a similar account derivation scheme based on `blake2_256` and is tricked into generating an account ID using the same hash input as the asset conversion pool, it may lead to unauthorized access to the pool. This design flaw exposes the pool to potential draining through collision in the hash input used for deriving the account ID.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "9.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.8.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.7.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/3250"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Potential hash input collisions in asset conversion pool account ID derivation",
+        "affected_system": "FRAME",
+        "type": "Unsafe Design",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2024-01-08T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240405-SRLABS-246",
+      "modified": "2024-04-05T12:00:00Z",
+      "published": "2024-04-05T12:00:00Z",
+      "related": [],
+      "summary": "Attackers can break the `delegate_call` workflow by uploading target code first and removing it later, temporarily breaking the functionality of legitimate smart contracts.",
+      "details": "This vulnerability affects all parachains using `pallet-contracts` and relates to an implementation flaw in the `delegate_call` function. Attackers can exploit the system by being the first to upload target code and later removing the code, which disrupts the `delegate_call` workflow. This breaks the functionality implemented in legitimate smart contracts until the code is re-uploaded.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "6.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.1.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/14079"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/cumulus/pull/2913"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Implementation flaw in `delegate_call`",
+        "affected_system": "pallet-contracts",
+        "type": "Implementation Flaw",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2022-11-17T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240506-SRLABS-369",
+      "modified": "2024-05-06T12:00:00Z",
+      "published": "2024-05-06T12:00:00Z",
+      "related": [],
+      "summary": "`add_delegate_dependency` API in `pallet-contracts` is not supported in ink!, preventing smart contract developers from using this feature.",
+      "details": "The `add_delegate_dependency` API provided by `pallet-contracts` is not supported in ink!, which restricts smart contract developers from accessing this functionality. This limitation can lead to vulnerabilities in delegate call workflows and interfere with legitimate contract upgrades.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "ink!",
+            "name": "ink"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.1"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "5.0.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "4.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/ink/pull/2076"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "`add_delegate_dependency` not supported by ink!",
+        "affected_system": "pallet-contracts",
+        "type": "Missing Feature",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-12-20T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240409-SRLABS-274",
+      "modified": "2024-04-09T12:00:00Z",
+      "published": "2024-04-09T12:00:00Z",
+      "related": [],
+      "summary": "The API functions of `Mapping`, `Lazy`, and `StorageVec` structs in ink! smart contracts may raise a panic if the encoded size of the input argument exceeds `ink_env::BUFFER_SIZE`.",
+      "details": "This vulnerability arises when API functions from `Mapping`, `Lazy`, and `StorageVec` structs handle input arguments that exceed the `ink_env::BUFFER_SIZE`, leading to potential panics. Although this is not directly a security issue, it may lead to unexpected behavior in smart contracts, particularly in complex or multi-contract projects. These issues might be exploited in composable vulnerabilities related to contract-specific logic or control-flow anomalies.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "ink!",
+            "name": "ink"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "n/a"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "5.0.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "4.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/ink/pull/1910"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/ink/pull/2045"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Possible panic on calling API functions in ink! smart contracts",
+        "affected_system": "ink!",
+        "type": "Non-exhaustive description of fallible API",
+        "discovery_method": "Code Review/Analysis",
+        "discovery_date": "2023-02-23T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20240409-SRLABS-35",
+      "modified": "2024-04-09T12:00:00Z",
+      "published": "2024-04-09T12:00:00Z",
+      "related": [],
+      "summary": "A vulnerability in the account management system allows nonce reuse and transaction replay for accounts that have been reaped and subsequently re-funded, potentially enabling attackers to steal newly deposited funds.",
+      "details": "This vulnerability arises when an account's balance falls below the existential deposit, leading to its removal from the database without retaining the last nonce value. If the account is later re-funded, previously valid transactions could be replayed, allowing attackers to steal the newly deposited funds. Discouraging the use of immortal transactions and warning users about the risks of reusing reaped accounts can mitigate this risk.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "5.3"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v1.0.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/4034"
+        },
+        {
+          "type": "DISCUSSION",
+          "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+        }
+      ],
+      "credits": [
+        {
+          "name": "SRLabs",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Nonce reuse/transaction replay possible if address gets reaped and reused later",
+        "affected_system": "All",
+        "type": "Transaction Replay/Nonce Reuse",
+        "discovery_method": "Documentation Review and System Analysis",
+        "discovery_date": "2021-01-08T12:00:00Z",
+        "public": true
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20230714-SRLABS-235",
+      "modified": "2023-07-14T12:00:00Z",
+      "published": "2023-07-14T12:00:00Z",
+      "related": [],
+      "summary": "Attackers can exceed allowable block execution time without exceeding block size/weight limits.",
+      "details": "Appending an item to a `Vec` storage item via `StorageValue.append` is supposed to be fast with the execution time not depending on the number of items already existing in the storage value. However this assumption is no longer valid with transactional processing since the first modification of a storage value within a transaction will require cloning the value so that changes can be rolled back when needed. This means that appending N items have a worst case memory complexity of `O(N**2)` since each appending could require cloning all pre-existing items.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "Critical"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.8.25"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.1.0",
+            "1.2.0",
+            "1.3.0",
+            "1.4.0",
+            "1.5.0",
+            "1.6.0",
+            "1.7.0",
+            "1.7.1",
+            "1.7.2",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.10.1"
+          ],
+          "ecosystem_specific": [],
+          "database_specific": {
+            "mitigation": "Before the monorepo, two open pull request were open to track the scope and efforts of the changes to remediate this issue: [substrate#13940](https://github.com/paritytech/substrate/pull/13940) & [substrate#14120](https://github.com/paritytech/substrate/pull/14120). There is a new PR tracking the fix for this vulnerability: [polkadot-sdk#1223](https://github.com/paritytech/polkadot-sdk/pull/1223).",
+            "eta": "Defininig the right amount of changes and resources to fix completely the vulnerability will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+          }
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/13940"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/14120"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1223"
+        }
+      ],
+      "credits": [
+        {
+          "name": "Parity Security",
+          "contact": [
+            "security@parity.io"
+          ],
+          "type": "COORDINATOR"
+        },
+        {
+          "name": "Giovanny Gongora",
+          "contact": [
+            "gio@parity.io"
+          ],
+          "type": "REMEDIATION_VERIFIER"
+        },
+        {
+          "name": "SRLabs",
+          "contact": [
+            "hello@srlabs.de"
+          ],
+          "type": "FINDER"
+        },
+        {
+          "name": "Parity FRAME",
+          "contact": [
+            "tech@parity.io"
+          ],
+          "type": "REMEDIATION_DEVELOPER"
+        }
+      ],
+      "database_specific": {
+        "title": "Non-constant execution time of transactional appending to storage Vec leads to DoS",
+        "affected_system": "FRAME",
+        "type": "Performance degradation",
+        "discovery_method": "Internal Audit",
+        "discovery_date": "2022-10-20T12:00:00Z",
+        "public": "false"
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20230602-SRLABS-248",
+      "modified": "2023-06-02T12:00:00Z",
+      "published": "2023-06-02T12:00:00Z",
+      "related": [],
+      "summary": "The vesting pallet was designed with restrictions on locked funds; users cannot transfer funds until the vesting schedule allows. However, a bug exists which allows transaction fees and tips to be deducted from the unvested balance.",
+      "details": "While the fees are relatively unproblematic since 80% of the fees go to the treasury (and only 20% to the block author), the tips will go directly to the block author. This effectively allows bypassing the vesting restrictions if the user is operating (or bribing) a validator by just submitting a transaction with a huge tip privately to the cooperating validator, after the tips have been transferred to the author the funds can be freely spent without any vesting restrictions.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "Critical"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0-0"
+                },
+                {
+                  "fixed": "0.9.42"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.1.0",
+            "1.2.0",
+            "1.3.0",
+            "1.4.0",
+            "1.5.0",
+            "1.6.0",
+            "1.7.0",
+            "1.7.1",
+            "1.7.2",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.10.1"
+          ],
+          "ecosystem_specific": [],
+          "database_specific": {
+            "mitigation": "This was addressed in [substrate#12109](https://github.com/paritytech/substrate/pull/12109) and extra efforts have been made to document `WithdrawReasons` in [substrate#13964](https://github.com/paritytech/substrate/pull/13964). Ensure your runtime is configured correctly so users cannot spend vesting funds on tips, unless that is desired behaviour. As a note on `WithdrawReasons` in the future, once the transition from `Currency` to `fungible::*` is complete, it will be possible to completely drop the `WithdrawReasons` type.",
+            "eta": ""
+          }
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/13940"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/14120"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1223"
+        },
+        {
+          "type": "ARTICLE",
+          "url": "https://forum.polkadot.network/t/vesting-pallet-design-flow/3906"
+        }
+      ],
+      "credits": [
+        {
+          "name": "Parity Security",
+          "contact": [
+            "security@parity.io"
+          ],
+          "type": "COORDINATOR"
+        },
+        {
+          "name": "Giovanny Gongora",
+          "contact": [
+            "gio@parity.io"
+          ],
+          "type": "REMEDIATION_VERIFIER"
+        },
+        {
+          "name": "SRLabs",
+          "contact": [
+            "hello@srlabs.de"
+          ],
+          "type": "FINDER"
+        },
+        {
+          "name": "Parity FRAME",
+          "contact": [
+            "tech@parity.io"
+          ],
+          "type": "REMEDIATION_DEVELOPER"
+        }
+      ],
+      "database_specific": {
+        "title": "Users can bypass vesting restrictions via transaction tips",
+        "affected_system": "Runtime",
+        "type": "Design Flaw",
+        "discovery_method": "Internal Audit",
+        "discovery_date": "2022-11-30T12:00:00Z",
+        "public": "true"
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20230602-SRLABS-276",
+      "modified": "2023-06-02T12:00:00Z",
+      "published": "2023-06-02T12:00:00Z",
+      "related": [],
+      "summary": "Attackers can exhaust the PoV size without exceeding the proof_size weight limit. Depending on the business logic of the parachain it may be possible to permanently stall the chain by exceeding the PoV size with forced execution via on_initialize/on_idle or incoming XCM messages.",
+      "details": "The PoV size benchmarking introduced in [substrate#11637](https://github.com/paritytech/substrate/pull/11637) assumes the Trie is balanced and the number of layers is bound by `log16(Items)`. An attacker can generate specially crafted storage keys to dis-balance the Trie with a realistic amount of computational effort, resulting in more `log16(Items)` layers and thereby more node lookups than the benchmarking anticipated.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "polkadot-sdk"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "Critical"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.9.38"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "1.1.0",
+            "1.2.0",
+            "1.3.0",
+            "1.4.0",
+            "1.5.0",
+            "1.6.0",
+            "1.7.0",
+            "1.7.1",
+            "1.7.2",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.10.1"
+          ],
+          "ecosystem_specific": [],
+          "database_specific": {
+            "mitigation": "There was an open issue in the monorepo to track the scope and efforts of the changes to remediate this issue: [substrate#13501](https://github.com/paritytech/substrate/issues/13501). In the meantime, you could apply to run the benchmarking with `--additional-trie-layers 20`. In the monorepo [polkadot-sdk#3002](https://github.com/paritytech/polkadot-sdk/pull/3002) was merged to introduce a initial mitigations which still are not final to fully mitigate the vulnerability.",
+            "eta": "Defininig the right amount of changes and resources to fix completely the vulnerability will require careful planning and development. An estimated timeline for these changes is not provided but should be prioritized according to the severity of the vulnerability."
+          }
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/substrate/pull/13501"
+        },
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/3002"
+        }
+      ],
+      "credits": [
+        {
+          "name": "Parity Security",
+          "contact": [
+            "security@parity.io"
+          ],
+          "type": "COORDINATOR"
+        },
+        {
+          "name": "Giovanny Gongora",
+          "contact": [
+            "gio@parity.io"
+          ],
+          "type": "REMEDIATION_VERIFIER"
+        },
+        {
+          "name": "SRLabs",
+          "contact": [
+            "hello@srlabs.de"
+          ],
+          "type": "FINDER"
+        },
+        {
+          "name": "Parity FRAME",
+          "contact": [
+            "tech@parity.io"
+          ],
+          "type": "REMEDIATION_DEVELOPER"
+        }
+      ],
+      "database_specific": {
+        "title": "Proof size estimation is based on average case with balanced Trie instead of worst-case",
+        "affected_system": "Runtime",
+        "type": "Incorrect benchmarking",
+        "discovery_method": "Internal Audit",
+        "discovery_date": "2023-02-28T12:00:00Z",
+        "public": "false"
+      }
+    },
+    {
+      "schema_version": "1.6.3",
+      "id": "POLKA-20230818-SRLABS-326",
+      "modified": "2023-08-18T12:00:00Z",
+      "published": "2023-08-18T12:00:00Z",
+      "related": [],
+      "summary": "The limit MAX_ITEMS_IN_MULTIASSETS is not enforced, allowing a single WithdrawAsset instruction to withdraw a large number of assets simultaneously, consuming significant weight and potentially leading to a Denial of Service (DoS).",
+      "details": "This vulnerability arises from the missing enforcement of the MAX_ITEMS_IN_MULTIASSETS limit in XCM. As a result, attackers can exploit this flaw to execute a single WithdrawAsset instruction that withdraws an excessive number of assets at once, leading to high resource consumption and potentially overwhelming the system.",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Polkadot",
+            "name": "xcm"
+          },
+          "severity": [
+            {
+              "type": "CVSS_V4",
+              "score": "7.5"
+            }
+          ],
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0"
+                },
+                {
+                  "fixed": "1.3.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "v2",
+            "v3"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "FIX",
+          "url": "https://github.com/paritytech/polkadot-sdk/pull/1227"
+        }
+      ],
+      "credits": [
+        {
+          "name": "Internal Audit",
+          "contact": [],
+          "type": "FINDER"
+        }
+      ],
+      "database_specific": {
+        "title": "Missing enforcement for MAX_ITEMS_IN_MULTIASSETS",
+        "affected_system": "XCM",
+        "type": "Denial of Service (DoS)",
+        "discovery_method": "Internal Audit",
+        "discovery_date": "2023-08-03T12:00:00Z",
+        "public": true
+      }
+    }
+  ]
+}
