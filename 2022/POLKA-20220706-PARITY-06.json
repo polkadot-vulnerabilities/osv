@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20220706-PARITY-06",
+  "modified": "2024-08-03T07:11:39Z",
+  "published": "2022-07-06T17:15:14Z",
+  "related": [],
+  "summary": "Discrepancy in transfer value and actual value due to incorrect truncation in Frontier.",
+  "details": "Frontier is Substrate's Ethereum compatibility layer. In affected versions, the truncation done when converting between EVM balance type and Substrate balance type was incorrectly implemented. This led to possible discrepancies between the displayed EVM transfer value and the actual Substrate value transferred. An emergency upgrade was recommended, and EVM execution was advised to be temporarily paused. The issue was patched in Frontier master branch commit fed5e0a9577c10bea021721e8c2c5c378e16bf66 and polkadot-v0.9.22 branch commit e3e427fa2e5d1200a784679f8015d4774cedc934. The vulnerability only affected EVM internal states but did not impact Substrate balance states or nodes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "frontier"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3.1",
+          "score": "5.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "GIT",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "fed5e0a9577c10bea021721e8c2c5c378e16bf66"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "commits prior to fed5e0a9577c10bea021721e8c2c5c378e16bf66"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/paritytech/frontier/security/advisories/GHSA-hc8w-mx86-9fcj"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/frontier/pull/753"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/frontier/commit/e3e427fa2e5d1200a784679f8015d4774cedc934"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/frontier/commit/fed5e0a9577c10bea021721e8c2c5c378e16bf66"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Technologies",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Discrepancy in transfer value and actual value due to incorrect truncation in Frontier",
+    "affected_system": "frontier",
+    "type": "Always-Incorrect Control Flow Implementation",
+    "discovery_method": "Developer Review",
+    "discovery_date": "2022-07-06T17:15:14Z",
+    "public": true
+  }
+}

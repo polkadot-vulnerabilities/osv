@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20220924-PARITY-24",
+  "modified": "2024-08-03T12:00:43Z",
+  "published": "2022-09-24T01:25:09Z",
+  "related": [],
+  "summary": "Incorrect Calculation in Frontier leads to inflated Ethereum chain gas prices.",
+  "details": "Frontier is an Ethereum compatibility layer for Substrate. Prior to commit d3beddc6911a559a3ecc9b3f08e153dbe37a8658, the worst-case weight was always accounted as the block weight for all cases. In case of large EVM gas refunds, this can lead to block spamming attacks where an adversary constructs blocks with transactions that have large refunds or unused gases with reverts, inflating the chain gas prices. Although costly, this issue does not allow an attacker to alter the chain state. The issue was patched in commit d3beddc6911a559a3ecc9b3f08e153dbe37a8658, and there are no known workarounds.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "frontier"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3.1",
+          "score": "5.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "GIT",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "d3beddc6911a559a3ecc9b3f08e153dbe37a8658"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "< commit d3beddc6911a559a3ecc9b3f08e153dbe37a8658"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/paritytech/frontier/security/advisories/GHSA-v57h-6hmh-g2p4"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/frontier/pull/851"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Technologies",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Incorrect Calculation in Frontier leads to inflated Ethereum chain gas prices",
+    "affected_system": "frontier",
+    "type": "Incorrect Calculation",
+    "discovery_method": "Developer Review",
+    "discovery_date": "2022-09-24T01:25:09Z",
+    "public": true
+  }
+}

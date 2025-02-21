@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20250214-OWS-1",
+  "modified": "2025-02-14T00:00:00Z",
+  "published": "2025-02-14T00:00:00Z",
+  "related": [],
+  "summary": "An uncaught panic in the ORML Rewards pallet, caused by unvalidated user input exceeding the `u128` range in the `add_share` function, leads to Denial of Service (DoS).",
+  "details": "The vulnerability occurs when the `add_share` function doesn't validate user input, leading to a panic when values exceed the `u128` limit. This causes node crashes and invalid blocks, disrupting system operation. A patch is available in version 1.2.1 of the module.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "orml-rewards"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": 7.5
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.2.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "< 1.2.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "CONFIRM",
+      "url": "https://github.com/open-web3-stack/open-runtime-module-library/security/advisories/GHSA-5v93-9mqw-p9mh"
+    },
+    {
+      "type": "MISC",
+      "url": "https://github.com/open-web3-stack/open-runtime-module-library/pull/465"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Open Web3 Stack",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Uncaught Panic in ORML Rewards Pallet",
+    "affected_system": "Open Runtime Module Library",
+    "type": "Input Validation Flaw",
+    "discovery_method": "Developer Review",
+    "discovery_date": "2025-02-14T00:00:00Z",
+    "public": true
+  }
+}

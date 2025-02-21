@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20250128-POLYTOPE-1",
+  "modified": "2025-01-28T16:07:48Z",
+  "published": "2025-01-28T15:41:43Z",
+  "related": [],
+  "summary": "Critical vulnerability in `ismp-grandpa` <v15.0.1",
+  "details": "Hyperbridge is a hyper-scalable coprocessor for verifiable, cross-chain interoperability. A critical vulnerability was discovered in the `ismp-grandpa` crate, allowing a malicious prover to easily convince the verifier of the finality of arbitrary headers. This could be exploited to steal funds or compromise cross-chain applications.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "ismp-grandpa"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "9.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "15.0.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "<15.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/polytope-labs/hyperbridge/security/advisories/GHSA-wwx5-gpgr-vxr7"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/polytope-labs/hyperbridge/pull/372/commits/f0e85db718f5165b06585a49b14a66f8ad643aea"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/polytope-labs/ismp-substrate/pull/64/commits/5ca3351a19151f1a439c30d5cbdbfdc72a11f1a8#diff-3835cc24fb2011b3e8246036059acd8c2c2a9a869eedf7a210d18edb6543318dL262"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Polytope Labs",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Critical vulnerability in `ismp-grandpa` <v15.0.1",
+    "affected_system": "ismp-grandpa",
+    "type": "Always-Incorrect Control Flow Implementation, Improper Verification of Cryptographic Signature",
+    "discovery_method": "Developer Review",
+    "discovery_date": "2025-01-28T15:41:43Z",
+    "public": true
+  }
+}

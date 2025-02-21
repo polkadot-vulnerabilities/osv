@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20211018-RUSTBLOCKCHAIN-18",
+  "modified": "2024-08-04T02:59:31Z",
+  "published": "2021-10-18T21:00:13Z",
+  "related": [],
+  "summary": "Specification non-compliance in JUMPI",
+  "details": "The evm crate is a pure Rust implementation of the Ethereum Virtual Machine. In affected versions (<0.31.0), the `JUMPI` opcode's condition is checked after the destination validity check. However, in Geth and OpenEthereum, the condition check should occur before the destination validity check. This deviation from the specification presents a high-severity risk for Ethereum mainnet users and requires an immediate update to version 0.31.0 or later. Users leveraging the evm crate in Frontier or standalone blockchains face a lower severity issue, as there is no direct exploit path. However, these users should ensure all necessary chain upgrade preparations before updating.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "evm"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3.1",
+          "score": "8.7"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "0.31.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "< 0.31.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/rust-blockchain/evm/security/advisories/GHSA-pvh2-pj76-4m96"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/rust-blockchain/evm/pull/67"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Rust Blockchain",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Specification non-compliance in JUMPI",
+    "affected_system": "evm",
+    "type": "Always-Incorrect Control Flow Implementation",
+    "discovery_method": "UNKNOWN",
+    "discovery_date": "2021-10-18T21:00:13Z",
+    "public": true
+  }
+}

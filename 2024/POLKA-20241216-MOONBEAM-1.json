@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20241216-MOONBEAM-1",
+  "modified": "2024-12-16T12:00:00Z",
+  "published": "2024-12-16T12:00:00Z",
+  "related": [],
+  "summary": "Non-Transfer proxies can move funds via `pallet-identity`.",
+  "details": "A vulnerability in `pallet-identity` allows Non-Transfer proxies to indirectly transfer funds by using the `add_sub`, `set_subs`, and `quit_sub` calls. Although Non-Transfer proxies should not be able to move funds, this flaw lets them exploit these functions to withdraw reserved deposits, effectively bypassing the intended restrictions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "polkadot-sdk",
+        "name": "pallet-identity"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "5.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "1.17.0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "<1.17.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/commit/fix_commit_hash"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Moonbeam",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Non-Transfer Proxy Can Move Funds via pallet-identity",
+    "affected_system": "pallet-identity",
+    "type": "Implementation Flaw",
+    "discovery_method": "Community report",
+    "discovery_date": "2024-12-16T12:00:00Z",
+    "public": true
+  }
+}

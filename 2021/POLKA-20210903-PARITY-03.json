@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20210903-PARITY-03",
+  "modified": "2024-08-04T01:58:18.337Z",
+  "published": "2021-09-03T17:45:11Z",
+  "related": [],
+  "summary": "A bug in `pallet-ethereum` of Frontier (Substrate's Ethereum compatibility layer) allowed invalid transactions to be included in the Ethereum block state due to improper input data size validation. While these invalid transactions didn't alter the internal Ethereum or Substrate state, they could appear as included, with no actual effect.",
+  "details": "Prior to commit number `0b962f218f0cdd796dadfe26c3f09e68f7861b26`, a bug in the `pallet-ethereum` module caused invalid transactions to be included in the Ethereum block state. These transactions were not capable of altering the internal state of Ethereum or Substrate, as they were rejected by the Ethereum Virtual Machine (EVM). The flaw is mitigated by the patch introduced in commit `0b962f218f0cdd796dadfe26c3f09e68f7861b26`, with no workaround available apart from applying the patch.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "frontier"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": 5.3
+        }
+      ],
+      "ranges": [
+        {
+          "type": "COMMIT",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "0b962f218f0cdd796dadfe26c3f09e68f7861b26"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "< 0b962f218f0cdd796dadfe26c3f09e68f7861b26"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "CONFIRM",
+      "url": "https://github.com/paritytech/frontier/security/advisories/GHSA-hw4v-5x4h-c3xm"
+    },
+    {
+      "type": "MISC",
+      "url": "https://github.com/paritytech/frontier/pull/465"
+    },
+    {
+      "type": "MISC",
+      "url": "https://github.com/paritytech/frontier/pull/465/commits/8a2b890a2fb477d5fedd0e4335b00623832849ae"
+    },
+    {
+      "type": "MISC",
+      "url": "https://github.com/paritytech/frontier/commit/0b962f218f0cdd796dadfe26c3f09e68f7861b26"
+    }
+  ],
+  "credits": [
+    {
+      "name": "GitHub Security Advisory",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Transaction validity oversight in pallet-ethereum",
+    "affected_system": "Ethereum compatibility layer",
+    "type": "Input Validation Flaw",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2021-08-16T00:00:00Z",
+    "public": true
+  }
+}

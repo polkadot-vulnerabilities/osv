@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20230322-PARITY-22",
+  "modified": "2024-08-02T12:38:25Z",
+  "published": "2023-03-22T20:11:43Z",
+  "related": [],
+  "summary": "Frontier's modexp precompile is slow for even modulus.",
+  "details": "Frontier is an Ethereum compatibility layer for Substrate. Frontier's `modexp` precompile uses the `num-bigint` crate under the hood. Prior to pull request 1017, the implementation treated cases of even and odd modulus separately, leading to a gas cost discrepancy. Odd modulus uses fast Montgomery multiplication, while even modulus relies on a slower power algorithm. This unaccounted gas cost difference could be exploited for denial of service attacks. The issue was mitigated in the short term by increasing gas costs for even modulus and will be addressed long-term by improving `num-bigint` or adopting a different modexp implementation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "frontier"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3.1",
+          "score": "7.5"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "0.1.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "<=0.1.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/paritytech/frontier/security/advisories/GHSA-fcmm-54jp-7vf6"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/frontier/pull/1017"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/frontier/commit/5af12e94d7dfc8a0208a290643a800f55de7b219"
+    },
+    {
+      "type": "DOCUMENTATION",
+      "url": "https://github.com/rust-num/num-bigint/blob/6f2b8e0fc218dbd0f49bebb8db2d1a771fe6bafa/src/biguint/power.rs#L134"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Technologies",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "Frontier's modexp precompile is slow for even modulus",
+    "affected_system": "frontier",
+    "type": "Incorrect Calculation",
+    "discovery_method": "Developer Review",
+    "discovery_date": "2023-03-22T20:11:43Z",
+    "public": true
+  }
+}

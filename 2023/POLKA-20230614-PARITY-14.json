@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20230614-PARITY-14",
+  "modified": "2024-12-30T14:57:52Z",
+  "published": "2023-06-14T20:10:54Z",
+  "related": [],
+  "summary": "ink! vulnerable to incorrect decoding of storage value when using `DelegateCall`.",
+  "details": "ink! is an embedded domain-specific language to write smart contracts in Rust for blockchains built on the Substrate framework. A vulnerability in versions >=4.0.0 and <4.2.1 led to incorrect decoding of the return value when using delegate call mechanics via `CallBuilder::delegate` or `ink_env::invoke_contract_delegate`. This flaw allowed unexpected behaviors in smart contract execution, impacting security and contract reliability.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "ink"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V3.1",
+          "score": "5.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "4.0.0"
+            },
+            {
+              "fixed": "4.2.1"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        ">=4.0.0, <4.2.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "ADVISORY",
+      "url": "https://github.com/paritytech/ink/security/advisories/GHSA-853p-5678-hv8f"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/ink/pull/1450"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/ink/commit/f1407ee9f87e5f64d467a22d26ee88f61db7f3db"
+    },
+    {
+      "type": "DOCUMENTATION",
+      "url": "https://docs.rs/ink_env/4.2.0/ink_env/call/struct.CallBuilder.html#method.delegate"
+    },
+    {
+      "type": "DOCUMENTATION",
+      "url": "https://docs.rs/ink_env/4.2.0/ink_env/fn.invoke_contract_delegate.html"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Parity Technologies",
+      "contact": [],
+      "type": "FINDER"
+    }
+  ],
+  "database_specific": {
+    "title": "ink! vulnerable to incorrect decoding of storage value when using `DelegateCall`",
+    "affected_system": "ink",
+    "type": "Improper Check for Unusual or Exceptional Conditions, Incorrect Check of Function Return Value",
+    "discovery_method": "Developer Review",
+    "discovery_date": "2023-06-14T20:10:54Z",
+    "public": true
+  }
+}
