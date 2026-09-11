@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.3",
   "id": "POLKA-20240405-SRLABS-261",
-  "modified": "2024-04-05T12:00:00Z",
+  "modified": "2026-03-03T12:00:00Z",
   "published": "2024-04-05T12:00:00Z",
   "related": [],
-  "summary": "Overflowing the bounded `DeletionQueue` allows for a Denial of Service (DoS) attack against contract termination in parachains using `pallet-contracts`. If too many contracts are terminated in a short time, further termination attempts fail.",
+  "summary": "Overflowing the bounded `DeletionQueue` allows for a Denial of Service (DoS) attack against contract termination in parachains using `pallet-contracts`. If too many contracts are terminated in a short time, further termination attempts fail, locking up the balance and storage deposit of targeted contracts",
   "details": "This vulnerability occurs when the bounded `DeletionQueue`, set by `DeletionQueueDepth`, is exceeded. For example, in the test runtime, this depth is set to 128. If more than this number of contracts is terminated in a short period, subsequent attempts to terminate additional contracts will fail. This can allow attackers to prevent legitimate contract termination, effectively locking up the remaining balance and storage deposit of affected contracts.",
   "affected": [
     {
@@ -51,10 +51,15 @@
       "name": "SRLabs",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {
-    "title": "DoS by overflowing `DeletionQueue`",
+    "title": "DoS by overflowing `DeletionQueue` blocking contract termination",
     "affected_system": "pallet-contracts",
     "type": "Implementation Flaw",
     "discovery_method": "Code Review/Analysis",

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6.3",
   "id": "POLKA-20240409-SRLABS-35",
-  "modified": "2024-04-09T12:00:00Z",
+  "modified": "2026-01-28T12:00:00Z",
   "published": "2024-04-09T12:00:00Z",
   "related": [],
   "summary": "A vulnerability in the account management system allows nonce reuse and transaction replay for accounts that have been reaped and subsequently re-funded, potentially enabling attackers to steal newly deposited funds.",
@@ -24,12 +24,15 @@
           "events": [
             {
               "introduced": "0.0.0"
+            }, 
+            {
+              "fixed": "v1.12.0"
             }
           ]
         }
       ],
       "versions": [
-        "v1.0.0"
+        "<v1.12.0"
       ]
     }
   ],
@@ -48,6 +51,11 @@
       "name": "SRLabs",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {

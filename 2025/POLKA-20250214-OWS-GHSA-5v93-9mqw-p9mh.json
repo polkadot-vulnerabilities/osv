@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6.3",
-  "id": "POLKA-20250214-OWS-1",
-  "modified": "2025-02-14T00:00:00Z",
+  "id": "POLKA-20250214-OWS-GHSA-5v93-9mqw-p9mh",
+  "modified": "2026-01-27T12:00:00Z",
   "published": "2025-02-14T00:00:00Z",
   "related": [],
   "summary": "An uncaught panic in the ORML Rewards pallet, caused by unvalidated user input exceeding the `u128` range in the `add_share` function, leads to Denial of Service (DoS).",
@@ -42,6 +42,10 @@
       "url": "https://github.com/open-web3-stack/open-runtime-module-library/security/advisories/GHSA-5v93-9mqw-p9mh"
     },
     {
+      "type": "FIX",
+      "url": "https://github.com/open-web3-stack/open-runtime-module-library/pull/1016"
+    },
+    {
       "type": "MISC",
       "url": "https://github.com/open-web3-stack/open-runtime-module-library/pull/465"
     }
@@ -51,6 +55,11 @@
       "name": "Open Web3 Stack",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {

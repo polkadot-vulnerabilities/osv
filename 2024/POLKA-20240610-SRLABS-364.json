@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6.3",
   "id": "POLKA-20240610-SRLABS-364",
-  "modified": "2024-06-10T12:00:00Z",
+  "modified": "2026-01-27T12:00:00Z",
   "published": "2024-06-10T12:00:00Z",
   "related": [],
   "summary": "A vulnerability in XCMv4 and XCMv2 allows bypassing the `MAX_INSTRUCTIONS_TO_DECODE` limit, which can lead to memory exhaustion. The limit is enforced in XCMv3 but missing in XCMv4 and XCMv2.",
@@ -38,6 +38,14 @@
   ],
   "references": [
     {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/3114"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/4978"
+    },
+    {
       "type": "DISCUSSION",
       "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
     }
@@ -47,6 +55,11 @@
       "name": "SRLabs",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {

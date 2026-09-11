@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20260421-SRLABS-590",
+  "modified": "2026-04-21T12:00:00Z",
+  "published": "2026-04-21T12:00:00Z",
+  "related": [],
+  "summary": "pallet-revive's EVM transaction decoder misclassifies unrecognized typed-transaction bytes as legacy transactions instead of rejecting them, deviating from the specification and producing inconsistent transaction validity between pallet-revive and spec-compliant EVM implementations.",
+  "details": "The specification reserves a distinct byte range for typed-transaction identifiers, separate from the range used to signal legacy transactions. pallet-revive's decoder only recognizes the transaction types it actually implements, and treats any other value, including undefined typed-transaction identifiers, as a legacy transaction rather than rejecting it. As a result, a payload that a spec-compliant EVM implementation would reject as invalid can instead be accepted and decoded by pallet-revive, producing inconsistent transaction validity between chains and complicating tooling such as cross-chain bridges that assume consistent transaction interpretation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "5.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "polkadot-stable2503"
+            },
+            {
+              "fixed": "polkadot-stable2512"
+            }
+          ]
+        }
+      ],
+      "versions": [">=polkadot-stable2503, <polkadot-stable2512"]
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/10290"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
+    }
+  ],
+  "database_specific": {
+    "title": "Pallet-revive misclassifies unrecognized typed transactions as legacy",
+    "affected_system": "pallet-revive",
+    "type": "Non-Canonical Transaction Decoding",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2025-10-27T12:00:00Z",
+    "public": true
+  }
+}

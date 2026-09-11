@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20260420-SRLABS-608",
+  "modified": "2026-04-20T12:00:00Z",
+  "published": "2026-04-20T12:00:00Z",
+  "related": [],
+  "summary": "In `pallet-staking-async`, fetching election results charges the block a lower weight than the operation actually consumes, letting the additional database cost go unaccounted and enabling overweight block execution.",
+  "details": "When `pallet-staking-async` fetches election results, it calculates the operation's cost including extra database work, but only charges the block's weight budget for the base cost before that extra work is added. The additional weight the database operations actually consume is therefore never deducted. This under-metering gap can compound across repeated election-result fetches, allowing overweight block execution, a Denial of Service risk.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "2.3"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "polkadot-stable2603"
+            },
+            {
+              "fixed": "polkadot-stable2603"
+            }
+          ]
+        }
+      ],
+      "versions": []
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/polkadot-sdk/pull/11167"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [],
+      "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
+    }
+  ],
+  "database_specific": {
+    "title": "Under-accounted weight in pallet-staking-async enables overweight block execution",
+    "affected_system": "pallet-staking-async",
+    "type": "Incorrect Weight Calculation",
+    "discovery_method": "Code Review/Analysis",
+    "discovery_date": "2025-12-19T12:00:00Z",
+    "public": true
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6.3",
-  "id": "POLKA-20250128-POLYTOPE-1",
-  "modified": "2025-01-28T16:07:48Z",
+  "id": "POLKA-20250128-POLYTOPE-GHSA-wwx5-gpgr-vxr7",
+  "modified": "2026-01-27T12:00:00Z",
   "published": "2025-01-28T15:41:43Z",
   "related": [],
   "summary": "Critical vulnerability in `ismp-grandpa` <v15.0.1",
@@ -55,6 +55,11 @@
       "name": "Polytope Labs",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {

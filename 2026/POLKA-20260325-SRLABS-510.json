@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20260325-SRLABS-510",
+  "modified": "2026-03-25T12:00:00Z",
+  "published": "2026-03-25T12:00:00Z",
+  "related": ["POLKA-20240411-SRLABS-328_189"],
+  "summary": "An attacker can fill all signed phase solution slots with invalid high-score solutions and bail out right before the end of the signed phase, submitting a biased solution to manipulate the validator set.",
+  "details": "For Polkadot, with a base deposit of 4 DOT and SignedMaxSubmissions set to 16, where the deposit doubles with each submission, an attacker only needs to fill the first 8 slots claiming impossibly high scores with invalid solutions, that only fail in the final step. This would lead to a cost of roughly 1000 DOT. This allows an attacker to block all honest solution miners from participating. Additionally, by bailing out right before the end of the signed phase and submitting a biased solution, the attacker can manipulate the validator set.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "polkadot-sdk"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "0.0.0"
+            },
+            {
+              "fixed": "polkadot-stable2509"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "<polkadot-stable2509"
+      ]
+    }
+  ],
+  "references": [
+    {
+    "type": "FIX",
+    "url": "https://github.com/paritytech/polkadot-sdk/pull/9511"
+    },
+    {
+    "type": "FIX",
+    "url": "https://github.com/polkadot-fellows/runtimes/pull/1022"
+    },
+    {
+      "type": "DISCUSSION",
+      "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
+    }
+  ],
+  "credits": [
+    {
+      "name": "SRLabs",
+      "contact": [
+        "hello@srlabs.de"
+      ],
+      "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
+    }
+  ],
+  "database_specific": {
+    "title": "Attacker can block honest submissions by claiming all signed phase solution slots with invalid high-score solutions.",
+    "affected_system": "Runtime",
+    "type": "Denial of Service",
+    "discovery_method": "Internal Audit",
+    "discovery_date": "2025-06-05T12:00:00Z",
+    "public": true
+  }
+}

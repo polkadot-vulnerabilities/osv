@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.3",
+  "id": "POLKA-20260428-ACALA-2601",
+  "modified": "2026-04-28T12:00:00Z",
+  "published": "2026-04-28T12:00:00Z",
+  "related": [],
+  "summary": "From within a single XCM message, anyone can manipulate Acala's Homa DOT:LDOT exchange rate to mint unlimited unbacked LDOT (liquid DOT).",
+  "details": "Acala's Homa module derives its DOT:LDOT exchange rate from LDOT's on-chain balance rather than tracking it independently, and a single XCM message can both temporarily alter that balance and call directly into Homa's minting and redemption logic. By briefly burning part of its LDOT holdings before redeeming the rest, an attacker manipulates the exchange rate mid-message to redeem more DOT than was ever deposited, then restores the burned LDOT afterward. Repeating this cycle within a single XCM message compounds the unbacked DOT and LDOT extracted on each iteration, allowing unlimited free minting.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Polkadot",
+        "name": "Acala"
+      },
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "7.1"
+        }
+      ],
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "v2.1.2"
+            }
+          ]
+        }
+      ],
+      "versions": [">=v2.1.2"]
+    }
+  ],
+  "references": [
+    {
+      "type": "REPORT",
+      "url": "https://dotpal.io/assets/files/bugbounty-acala-2601-f2542d5708ca28461f10c7fc6e410972.pdf"
+    }
+  ],
+  "credits": [
+    {
+      "name": "DOTPAL",
+      "contact": [],
+      "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
+    }
+  ],
+  "database_specific": {
+    "title": "Unlimited LDOT minting via XCM-manipulated homa exchange rate",
+    "affected_system": "Homa Module / XCM",
+    "type": "Configuration Oversight / Economic Exploit",
+    "discovery_method": "Bug Bounty",
+    "discovery_date": "2026-01-19T12:00:00Z",
+    "public": true
+  }
+}

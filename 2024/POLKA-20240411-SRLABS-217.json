@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6.3",
   "id": "POLKA-20240411-SRLABS-217",
-  "modified": "2024-04-11T12:00:00Z",
+  "modified": "2026-01-27T12:00:00Z",
   "published": "2024-04-11T12:00:00Z",
   "related": [],
   "summary": "A vulnerability in the XCM system allows third-party accounts to mint an indefinite amount of new tokens and create up to 2**32 sufficient accounts without paying an adequate storage deposit, leading to potential storage exhaustion in the parachain.",
@@ -38,6 +38,10 @@
   ],
   "references": [
     {
+      "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/12984"
+    },
+    {
       "type": "DISCUSSION",
       "url": "https://forum.polkadot.network/t/improving-the-substrate-ecosystem-vulnerabilities-disclosure/38/18"
     }
@@ -47,6 +51,11 @@
       "name": "SRLabs",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {

@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.3",
   "id": "POLKA-20240405-SRLABS-262",
-  "modified": "2024-04-05T12:00:00Z",
+  "modified": "2026-03-03T12:00:00Z",
   "published": "2024-04-05T12:00:00Z",
   "related": [],
-  "summary": "The weight calculation for deletions in `DeletionQueue` is based on execution time rather than proof size, potentially leading to exceeding permissible proof sizes and causing collators to be unable to produce valid blocks for the affected parachain.",
+  "summary": "The weight calculation for deletions in `DeletionQueue` is based on execution time rather than proof size, potentially leading to exceeding permissible proof sizes and causing collators to be unable to produce valid blocks for the affected parachain, effectively stalling block production.",
   "details": "The vulnerability lies in how the `DeletionQueue` calculates weight based on execution time rather than the required proof size for iterating through all storage entries to be deleted. This flaw can result in the proof size limit being exceeded, which prevents collators from creating valid blocks, causing a persistent Denial of Service (DoS) on parachains using the contracts pallet.",
   "affected": [
     {
@@ -39,6 +39,10 @@
   "references": [
     {
       "type": "FIX",
+      "url": "https://github.com/paritytech/substrate/pull/13268"
+    },
+    {
+      "type": "FIX",
       "url": "https://github.com/paritytech/substrate/pull/13702"
     },
     {
@@ -55,10 +59,15 @@
       "name": "SRLabs",
       "contact": [],
       "type": "FINDER"
+    },
+    {
+      "name": "Ivana Klasovita",
+      "contact": ["ivana.klasovita@parity.io"],
+      "type": "DISCLOSURE_VERIFIER"
     }
   ],
   "database_specific": {
-    "title": "DoS by overflowing `DeletionQueue` via improper weight calculation",
+    "title": "DoS via unaccounted proof size in `DeletionQueue` processing, stalling block production",
     "affected_system": "pallet-contracts",
     "type": "Implementation Flaw",
     "discovery_method": "Code Review/Analysis",
